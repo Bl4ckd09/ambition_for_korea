@@ -231,7 +231,7 @@ export default function Home() {
           <h2 className="center reveal">Straight answers.</h2>
           <div className="faq reveal">
             <details><summary>Is the output anonymous?</summary><p>We don&apos;t use that word. We report what was checked and what remains. Release of real data is decided by a qualified expert under HIPAA Expert Determination.</p></details>
-            <details><summary>Is the demo live?</summary><p>No. It replays recorded pipeline output on synthetic sessions. Every person, number, and place is invented.</p></details>
+            <details><summary>Is the demo live?</summary><p>Run pipeline calls our backend. By default it returns that pipeline&apos;s recorded output; with the pipeline configured on the server, it runs live. Sessions are synthetic: every person, number, and place is invented.</p></details>
             <details><summary>What do the percentages mean?</summary><p>Model probability judgments under fixed test conditions. In the lineup, chance is 10%. They are evidence for review, not real-world rates.</p></details>
             <details><summary>Why rewrite instead of mask?</summary><p>Masking removes strings. Risk lives in combinations of details, and value lives in exact clinical facts. Rewriting handles both.</p></details>
           </div>

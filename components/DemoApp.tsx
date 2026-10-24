@@ -10,21 +10,37 @@ const STEP_MS = 3600;
 export default function DemoApp({ samples }: { samples: Sample[] }) {
   const [idx, setIdx] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [runs, setRuns] = useState<Record<string, Sample>>({});
+  const [status, setStatus] = useState<{ mode: 'running' | 'live' | 'recorded' | 'error'; error?: string }>();
   const { from, to, phase, go, jump } = useStageMorph('original');
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const token = useRef(0);
   useEffect(() => () => clearTimeout(timer.current), []);
 
-  const s = samples[idx];
+  const s = runs[samples[idx].id] ?? samples[idx];
   const sum = s.evaluation.summary;
   const at = STAGES.indexOf(to);
 
-  const stop = () => { clearTimeout(timer.current); setPlaying(false); };
+  const stop = () => { token.current++; clearTimeout(timer.current); setPlaying(false); };
   const step = (st: Stage) => { stop(); go(st); };
-  const pick = (i: number) => { stop(); setIdx(i); jump('original'); };
-  const play = () => {
+  const pick = (i: number) => { stop(); setIdx(i); setStatus(undefined); jump('original'); };
+  const play = async () => {
     stop();
+    const t = token.current;
     setPlaying(true);
+    setStatus({ mode: 'running' });
     jump('original');
+    try {
+      const res = await fetch('/api/run', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: s.id }) });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error ?? res.statusText);
+      if (t !== token.current) return;
+      setRuns(r => ({ ...r, [s.id]: body.sample }));
+      setStatus({ mode: body.mode });
+    } catch (e) {
+      if (t === token.current) { setStatus({ mode: 'error', error: (e as Error).message }); setPlaying(false); }
+      return;
+    }
     const after = (ms: number, f: () => void) => { timer.current = setTimeout(f, ms); };
     after(700, () => { go('stage1'); after(STEP_MS, () => { go('final'); after(1200, () => setPlaying(false)); }); });
   };
@@ -69,8 +85,13 @@ export default function DemoApp({ samples }: { samples: Sample[] }) {
             </Fragment>
           ))}
         </div>
+        {status && (
+          <span className="chip" role="status" title={status.error}>
+            {{ running: 'Running pipeline…', live: 'Live pipeline run', recorded: 'Recorded pipeline run', error: 'Pipeline run failed' }[status.mode]}
+          </span>
+        )}
         <button className="btn btn-primary btn-sm" type="button" onClick={play} disabled={playing}>
-          {playing ? 'Playing…' : to === 'final' ? '↺ Replay' : '▶ Play'}
+          {playing ? 'Running…' : to === 'final' ? '↺ Run again' : '▶ Run pipeline'}
         </button>
       </div>
 
@@ -79,7 +100,7 @@ export default function DemoApp({ samples }: { samples: Sample[] }) {
           {s.transcript.original.map((t, i) => (
             <div key={i} className={`mrow${t.role === 'C' ? ' client' : ''}`}>
               <span className="who">{t.role === 'T' ? 'Therapist' : 'Client'}</span>
-              <p><Morph from={s.transcript[from][i].text} to={s.transcript[to][i].text} phase={phase} /></p>
+              <p><Morph from={s.transcript[from][i]?.text ?? ''} to={s.transcript[to][i]?.text ?? ''} phase={phase} /></p>
             </div>
           ))}
         </div>
