@@ -8,12 +8,12 @@ const sans = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const serif = Instrument_Serif({ subsets: ['latin'], weight: '400', style: ['normal', 'italic'], variable: '--font-serif' });
 
 const description =
-  'Into the Unknown transforms sensitive mental health conversations into data for AI training and evaluation, while preserving the context that matters. Interactive prototype using synthetic conversations.';
+  'Sotto transforms sensitive mental health conversations into data for AI training and evaluation, while preserving the context that matters. Interactive prototype using synthetic conversations.';
 
 export const metadata: Metadata = {
-  title: { default: 'Into the Unknown | Protect identity. Preserve meaning.', template: '%s | Into the Unknown' },
+  title: { default: 'Sotto — Protect identity. Preserve meaning.', template: '%s — Sotto' },
   description,
-  openGraph: { title: 'Into the Unknown | Protect identity. Preserve meaning.', description },
+  openGraph: { title: 'Sotto — Protect identity. Preserve meaning.', description },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -28,8 +28,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="top">{children}</main>
         <footer>
           <div className="wrap">
-            <span>© 2026 Into the Unknown · Interactive prototype using synthetic conversations</span>
-            <span>This site describes no real patients, partners, customers, or certified performance. Not legal advice.</span>
+            <span>© 2026 Sotto</span>
+            <span>Prototype · synthetic data only · not legal advice</span>
           </div>
         </footer>
         <RevealObserver />
