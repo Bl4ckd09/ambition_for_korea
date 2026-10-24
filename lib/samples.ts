@@ -8,7 +8,7 @@ type ByStage<T> = Record<Stage, T>;
 export const STAGE_LABEL: Record<Stage, string> = {
   original: 'Original',
   stage1: 'Baseline (Presidio)',
-  final: 'Sotto',
+  final: 'Into the Unknown',
 };
 
 export type Turn = { speaker: string; role: 'T' | 'C'; text: string };

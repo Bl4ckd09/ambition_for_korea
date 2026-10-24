@@ -24,7 +24,7 @@ export default function DemoApp({ samples }: { samples: Sample[] }) {
 
   const download = () => {
     const blob = new Blob([JSON.stringify(exportRecord(s), null, 2)], { type: 'application/json' });
-    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `sotto-${s.id}.json` });
+    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `into-the-unknown-${s.id}.json` });
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   };
@@ -84,7 +84,7 @@ export default function DemoApp({ samples }: { samples: Sample[] }) {
       <Report s={s} />
 
       <div className="panel demo-foot">
-        <p>Export the buyer-facing record: the Sotto transcript, retained attributes, clinical facts, and verification results. The original, the baseline output, and the lineup answer key are never included.</p>
+        <p>Export the buyer-facing record: the Into the Unknown transcript, retained attributes, clinical facts, and verification results. The original, the baseline output, and the lineup answer key are never included.</p>
         <button className="btn btn-primary btn-sm" type="button" onClick={download}>Download {s.id} JSON</button>
       </div>
     </div>

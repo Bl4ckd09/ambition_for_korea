@@ -73,7 +73,7 @@ export default function Home() {
         <div className="wrap">
           <p className="eyebrow reveal">The problem</p>
           <h2 className="reveal">Off-the-shelf PII scrubbing misses what identifies <em>and destroys what matters.</em></h2>
-          <p className="lede reveal">Therapy sessions are full of details that identify someone only in combination: a public event, a rare role, a small town. Pattern-based tools look for names and numbers. Here is the same synthetic session after Microsoft Presidio with default settings, and after Sotto.</p>
+          <p className="lede reveal">Therapy sessions are full of details that identify someone only in combination: a public event, a rare role, a small town. Pattern-based tools look for names and numbers. Here is the same synthetic session after Microsoft Presidio with default settings, and after Into the Unknown.</p>
 
           <h3 className="cmp-title reveal">It misses what identifies</h3>
           <div className="compare reveal">
@@ -122,7 +122,7 @@ export default function Home() {
         <div className="wrap">
           <p className="eyebrow reveal">Results</p>
           <h2 className="reveal">Measured sample by sample, <em>against a baseline.</em></h2>
-          <p className="lede reveal">Three synthetic sessions built to be hard: a publicly reported death, a state title won by a minor, a 93-year-old veteran. Each one is evaluated as written, after Presidio, and after Sotto.</p>
+          <p className="lede reveal">Three synthetic sessions built to be hard: a publicly reported death, a state title won by a minor, a 93-year-old veteran. Each one is evaluated as written, after Presidio, and after Into the Unknown.</p>
           <div className="results">
             {samples.map(s => {
               const sum = s.evaluation.summary;
@@ -170,7 +170,7 @@ export default function Home() {
           <div>
             <p className="eyebrow reveal">Interactive demo</p>
             <h2 className="reveal">Read every session <em>three ways.</em></h2>
-            <p className="lede reveal">Line up the original, the Presidio baseline, and Sotto turn by turn. Then open the report behind every number.</p>
+            <p className="lede reveal">Line up the original, the Presidio baseline, and Into the Unknown turn by turn. Then open the report behind every number.</p>
             <ol className="reveal">
               <li>Pick one of three synthetic sessions</li>
               <li>Compare all three versions turn by turn</li>
@@ -209,7 +209,7 @@ export default function Home() {
               <div className="never"><b>Never included:</b> the original session, the baseline output, identifier highlights, descriptions of the original mosaic clues, the lineup answer key, audio or voiceprints.</div>
             </div>
             <div className="code reveal">
-              <div className="code-h"><span>sotto-{s1.id}.json</span><span>exported by the demo</span></div>
+              <div className="code-h"><span>into-the-unknown-{s1.id}.json</span><span>exported by the demo</span></div>
               <pre dangerouslySetInnerHTML={{ __html: highlightJson(JSON.stringify(exportRecord(s1), null, 2)) }} />
             </div>
           </div>
@@ -226,7 +226,7 @@ export default function Home() {
             <div className="card wide reveal">
               <span className="step-n">Core design choice</span>
               <h3>Expert Determination, not just Safe Harbor</h3>
-              <p>Safe Harbor strips dates, sub-state geography, and unique characteristics, which is exactly the context evaluations need. Under Expert Determination, a qualified expert can approve richer data for a defined recipient. Sotto&apos;s de-identification sheet, Safe Harbor category checks, mosaic-clue scores, and lineup results are designed to give that expert evidence they can work with.</p>
+              <p>Safe Harbor strips dates, sub-state geography, and unique characteristics, which is exactly the context evaluations need. Under Expert Determination, a qualified expert can approve richer data for a defined recipient. Into the Unknown&apos;s de-identification sheet, Safe Harbor category checks, mosaic-clue scores, and lineup results are designed to give that expert evidence they can work with.</p>
             </div>
             <div className="card reveal">
               <span className="step-n">Sourcing</span>
@@ -274,7 +274,7 @@ export default function Home() {
           <p className="eyebrow center reveal">FAQ</p>
           <h2 className="center reveal">Straight answers.</h2>
           <div className="faq reveal">
-            <details><summary>Is the output anonymous?</summary><p>We don&apos;t use that word, and nobody selling health data should. Sotto reduces exposure risk, records every decision in the de-identification sheet, and reports what remains, including where lineup risk is still above chance. Whether a real dataset can be released is decided by a qualified expert under HIPAA&apos;s Expert Determination, for a defined recipient.</p></details>
+            <details><summary>Is the output anonymous?</summary><p>We don&apos;t use that word, and nobody selling health data should. Into the Unknown reduces exposure risk, records every decision in the de-identification sheet, and reports what remains, including where lineup risk is still above chance. Whether a real dataset can be released is decided by a qualified expert under HIPAA&apos;s Expert Determination, for a defined recipient.</p></details>
             <details><summary>Is the demo running live?</summary><p>No. The demo shows recorded output from our pipeline (Presidio, Claude Sonnet, and Claude Haiku) run offline on three synthetic sessions. Every person, number, and place in them is invented. Nothing is sent from your browser.</p></details>
             <details><summary>What do the percentages mean?</summary><p>They are Claude Haiku&apos;s probability judgments under defined test conditions: specific questions about each clue and fact, and a fixed lineup of 10 synthetic profiles where chance is 10%. They are evidence for an expert&apos;s review, not measured real-world re-identification rates.</p></details>
             <details><summary>Why rewrite instead of redact?</summary><p>Redaction removes strings. The risk in therapy sessions is often in combinations of details, and the value is in exact clinical facts. A sheet decided once with full context lets the rewrite generalize the clues and keep the facts, and the evaluation checks both.</p></details>
