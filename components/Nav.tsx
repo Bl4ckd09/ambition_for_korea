@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 const SECTIONS = [
   ['problem', 'Problem'],
   ['how', 'How it works'],
+  ['results', 'Results'],
   ['dataset', 'Dataset'],
   ['compliance', 'U.S. path'],
   ['roadmap', 'Roadmap'],
