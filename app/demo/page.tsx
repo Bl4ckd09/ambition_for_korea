@@ -10,8 +10,8 @@ export default function DemoPage() {
     <section className="demo-page">
       <div className="wrap">
         <p className="eyebrow">Our team</p>
-        <h1>Meet the team</h1>
         <Team />
+        <h1>Demo</h1>
         <DemoApp samples={loadSamples()} />
       </div>
     </section>
