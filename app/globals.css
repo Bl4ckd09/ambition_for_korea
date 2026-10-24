@@ -173,7 +173,7 @@ h3{font-size:19px;margin:0 0 8px;letter-spacing:-.01em}
 @media(max-width:900px){.teaser{grid-template-columns:1fr}}
 
 /* demo page */
-.demo-page{padding:40px 0 112px;background:linear-gradient(180deg,var(--bg),#EFECE4 30%,var(--bg))}
+.demo-page{padding:16px 0 112px;background:linear-gradient(180deg,var(--bg),#EFECE4 30%,var(--bg))}
 .demo-page h1{font-size:clamp(24px,2.6vw,30px);margin:10px 0 0}
 .team{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .member{display:flex;align-items:center;gap:14px;min-width:0;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:16px}
