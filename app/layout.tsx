@@ -11,9 +11,9 @@ const description =
   'Into the Unknown transforms sensitive mental health conversations into data for AI training and evaluation, while preserving the context that matters. Interactive prototype using synthetic conversations.';
 
 export const metadata: Metadata = {
-  title: { default: 'Into the Unknown | Protect identity. Preserve meaning.', template: '%s | Into the Unknown' },
+  title: { default: 'Into the Unknown — Protect identity. Preserve meaning.', template: '%s — Into the Unknown' },
   description,
-  openGraph: { title: 'Into the Unknown | Protect identity. Preserve meaning.', description },
+  openGraph: { title: 'Into the Unknown — Protect identity. Preserve meaning.', description },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

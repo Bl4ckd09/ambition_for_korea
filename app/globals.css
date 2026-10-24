@@ -39,8 +39,9 @@ h3{font-size:19px;margin:0 0 8px;letter-spacing:-.01em}
 /* nav */
 .nav{position:sticky;top:0;z-index:20;background:rgba(246,244,239,.78);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid rgba(228,224,214,.7)}
 .nav-in{display:flex;align-items:center;gap:28px;height:64px}
-.logo{display:flex;align-items:center;gap:9px;font:700 19px var(--sans);letter-spacing:-.02em;text-decoration:none;color:var(--accent)}
-.logo span{color:var(--ink)}
+.logo{display:flex;align-items:center;gap:10px;font:700 18px var(--sans);letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.logo svg{flex:none}
+.logo em{font:italic 400 1.2em/1 var(--serif);letter-spacing:0;color:var(--accent);margin:0 .02em}
 .nav nav{display:flex;align-items:center;gap:24px;margin-left:auto}
 .nav nav a{font-size:14px;color:var(--muted);text-decoration:none}
 .nav nav a:hover,.nav nav a[aria-current="page"]{color:var(--ink)}

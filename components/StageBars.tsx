@@ -8,7 +8,7 @@ type Props = {
   compact?: boolean;
 };
 
-// Emphasis bars: Into the Unknown in the accent, original and baseline in grays. Every bar is labeled.
+// Emphasis bars: stage 2 in the accent, original and stage 1 in grays. Every bar is labeled.
 export default function StageBars({ values, format, max = 1, chance, compact }: Props) {
   return (
     <div className={`bars${compact ? ' compact' : ''}`}>

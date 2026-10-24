@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import LogoMark from './LogoMark';
 
 const SECTIONS = [
   ['problem', 'Problem'],
@@ -18,11 +19,8 @@ export default function Nav() {
     <header className="nav">
       <div className="wrap nav-in">
         <Link className="logo" href="/" aria-label="Into the Unknown home">
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2.5" />
-            <path d="M12 2a10 10 0 0 1 0 20z" fill="currentColor" />
-          </svg>
-          <span>Into the Unknown</span>
+          <LogoMark />
+          <span>Into <em>the</em> Unknown</span>
         </Link>
         <nav aria-label="Primary">
           {SECTIONS.map(([id, label]) => <Link key={id} href={`/#${id}`}>{label}</Link>)}
