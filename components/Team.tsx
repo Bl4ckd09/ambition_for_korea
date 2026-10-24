@@ -36,8 +36,10 @@ export default function Team() {
           <Image src={m.photo} alt={`Photo of ${m.name}`} width={260} height={260} />
           <div>
             <h2>{m.name}</h2>
-            <p className="role">{m.role}</p>
-            {m.badge && <span className="badge">{m.badge}</span>}
+            <div className="meta">
+              <p className="role">{m.role}</p>
+              {m.badge && <span className="badge">{m.badge}</span>}
+            </div>
             <p className="blurb">{m.blurb}</p>
           </div>
         </li>
