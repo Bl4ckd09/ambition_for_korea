@@ -1,0 +1,5 @@
+{
+  "S1": {"sex": "Female", "age": 34, "marital_status": "never_married", "education_level": "bachelors", "occupation": "registered_nurse", "city": "Moore", "state": "OK"},
+  "S2": {"sex": "Male", "age": 16, "marital_status": "never_married", "education_level": "9th_12th_no_diploma", "occupation": "not_in_workforce", "city": "Liberty Township", "state": "OH"},
+  "S3": {"sex": "Male", "age": 93, "marital_status": "widowed", "education_level": "high_school", "occupation": "not_in_workforce", "city": "Duluth", "state": "MN"}
+}

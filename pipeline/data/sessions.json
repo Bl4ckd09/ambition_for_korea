@@ -1,0 +1,542 @@
+[
+ {
+  "id": "S1",
+  "title": "응급실 야간 책임간호사",
+  "topics": "공황 발작, 수동적 자살사고, 음주, 아버지의 공개된 사망",
+  "note": "Synthetic. Adult ER nurse, panic and passive SI. All people, places, numbers are fictional but realistic.",
+  "turns": [
+   [
+    "T",
+    "Thanks for coming in today. Before we start, can you confirm your date of birth for the chart?"
+   ],
+   [
+    "C",
+    "Sure, it's 07/22/1991. And my new cell is (918) 555-0143 if the front desk needs it."
+   ],
+   [
+    "T",
+    "Got it. And the email on file, is that still right?"
+   ],
+   [
+    "C",
+    "Yeah, maria.delacruz91@gmail.com. Oh, and billing asked me for my social again, 512-44-8193, I gave it to them at intake."
+   ],
+   [
+    "T",
+    "Okay. Last time we talked about the night shifts. How has this week been?"
+   ],
+   [
+    "C",
+    "Honestly bad. I'm still the only Filipino charge nurse on nights at St. Brigid's Medical Center, so when two travelers called out on Saturday I covered the whole ER floor alone."
+   ],
+   [
+    "T",
+    "That sounds exhausting. What happened in your body during that shift?"
+   ],
+   [
+    "C",
+    "Around 3 a.m. my chest got tight, my hands went numb, I thought I was having a heart attack. That's the third panic attack this month."
+   ],
+   [
+    "T",
+    "How are you sleeping between shifts?"
+   ],
+   [
+    "C",
+    "Maybe four hours. I live alone now at 2417 Birchwood Lane, and the trains on the BNSF line wake me up constantly."
+   ],
+   [
+    "T",
+    "You mentioned last session that your father's death was coming up on an anniversary."
+   ],
+   [
+    "C",
+    "Yeah. My dad, Ernesto, died in the Moore tornado on May 20, 2025. He was helping a neighbor get into their storm shelter. It was on the news, they called him a hero on KOCO."
+   ],
+   [
+    "T",
+    "That's a heavy loss, and a public one. How are you coping with it right now?"
+   ],
+   [
+    "C",
+    "Mostly wine. Like four glasses most nights, sometimes the whole bottle on my days off."
+   ],
+   [
+    "T",
+    "I want to ask directly, because it matters. Have you had any thoughts of not wanting to be alive?"
+   ],
+   [
+    "C",
+    "Sometimes I wish I just wouldn't wake up. I don't have a plan or anything. I wouldn't do that to my brother Paolo, he already lost dad."
+   ],
+   [
+    "T",
+    "Thank you for telling me. Do you have access to anything at home you might use to hurt yourself?"
+   ],
+   [
+    "C",
+    "No guns. I do have meds from work, like I could get them easily, but I haven't thought about it like that."
+   ],
+   [
+    "T",
+    "Your PHQ-9 today came out at 17, which is in the moderately severe range. I'd like us to make a safety plan together and talk with Dr. Okafor about the sleep."
+   ],
+   [
+    "C",
+    "Okay. Dr. Okafor at the Riverside clinic? My MRN there is 00483921 if you need it. My next shift is Thursday, can we meet Wednesday?"
+   ],
+   [
+    "T",
+    "Wednesday at 4 works. Call 988 or come to the ER if those thoughts get stronger before then."
+   ]
+  ],
+  "gold": {
+   "direct": [
+    {
+     "text": "07/22/1991",
+     "type": "DATE"
+    },
+    {
+     "text": "(918) 555-0143",
+     "type": "PHONE"
+    },
+    {
+     "text": "maria.delacruz91@gmail.com",
+     "type": "EMAIL"
+    },
+    {
+     "text": "512-44-8193",
+     "type": "SSN"
+    },
+    {
+     "text": "St. Brigid's Medical Center",
+     "type": "EMPLOYER"
+    },
+    {
+     "text": "2417 Birchwood Lane",
+     "type": "ADDRESS"
+    },
+    {
+     "text": "Ernesto",
+     "type": "NAME"
+    },
+    {
+     "text": "May 20, 2025",
+     "type": "DATE"
+    },
+    {
+     "text": "Paolo",
+     "type": "NAME"
+    },
+    {
+     "text": "Okafor",
+     "type": "NAME"
+    },
+    {
+     "text": "00483921",
+     "type": "MRN"
+    },
+    {
+     "text": "maria",
+     "type": "NAME"
+    },
+    {
+     "text": "delacruz",
+     "type": "NAME"
+    }
+   ],
+   "quasi": [
+    {
+     "id": "Q1",
+     "desc": "only Filipino night charge nurse at a specific hospital (ethnicity + role + employer singles her out)"
+    },
+    {
+     "id": "Q2",
+     "desc": "father died in a specific named, dated tornado while helping a neighbor, covered on local TV as a hero (publicly searchable event)"
+    },
+    {
+     "id": "Q3",
+     "desc": "lives alone next to a specific named rail line"
+    },
+    {
+     "id": "Q4",
+     "desc": "covered an ER floor alone on a specific day when two travelers called out"
+    }
+   ],
+   "clinical": [
+    {
+     "id": "C1",
+     "fact": "recurrent panic attacks (about three this month) with chest tightness and numbness"
+    },
+    {
+     "id": "C2",
+     "fact": "insomnia, about four hours of sleep"
+    },
+    {
+     "id": "C3",
+     "fact": "heavy alcohol use, about four glasses of wine most nights, more on days off"
+    },
+    {
+     "id": "C4",
+     "fact": "passive suicidal ideation without a plan, protective factor is a sibling"
+    },
+    {
+     "id": "C5",
+     "fact": "access to medications through work (means access risk)"
+    },
+    {
+     "id": "C6",
+     "fact": "PHQ-9 score of 17 (moderately severe)"
+    },
+    {
+     "id": "C7",
+     "fact": "traumatic bereavement of father around an upcoming anniversary"
+    },
+    {
+     "id": "C8",
+     "fact": "occupational stress from night shift healthcare work"
+    }
+   ]
+  }
+ },
+ {
+  "id": "S2",
+  "title": "16세 고교 레슬링 선수",
+  "topics": "비자살적 자해, 팀 내 사이버 괴롭힘, 체중 감량, ADHD 약물",
+  "note": "Synthetic. 16-year-old athlete, self-harm and bullying. Spoken-out phone number to test ASR-style digits.",
+  "turns": [
+   [
+    "T",
+    "Hey Jordan, good to see you. Your mom said you wanted to talk without her in the room today?"
+   ],
+   [
+    "C",
+    "Yeah. Can you not tell her about the arm thing? She'll freak."
+   ],
+   [
+    "T",
+    "We talked about confidentiality in the first session. If I'm worried about your safety I have to involve her, but we'd decide how together. What's going on with your arm?"
+   ],
+   [
+    "C",
+    "I've been cutting again. Just on my upper arm so the wrestling singlet covers it. Like three times since homecoming."
+   ],
+   [
+    "T",
+    "Thank you for being honest. What was happening before those times?"
+   ],
+   [
+    "C",
+    "Mostly the group chat. Some guys on the team made a TikTok about me, my handle is @jordy_pins152 and they kept tagging me."
+   ],
+   [
+    "T",
+    "That sounds humiliating. What did the video say?"
+   ],
+   [
+    "C",
+    "That I only won state because the other kid was sick. I won the 152-pound title at the 2025 Ohio state tournament, the first sophomore from Lakota East to do it, and now everyone acts like it doesn't count."
+   ],
+   [
+    "T",
+    "So something you were proud of got turned into a target."
+   ],
+   [
+    "C",
+    "Exactly. Coach Brennan just says ignore it. And my dad's deployed in Qatar until February so he can't really help."
+   ],
+   [
+    "T",
+    "How are you sleeping and eating?"
+   ],
+   [
+    "C",
+    "I'm cutting weight anyway so I barely eat. Like one meal a day. Sleep's fine I guess."
+   ],
+   [
+    "T",
+    "Are you still taking the Vyvanse Dr. Patel prescribed for ADHD?"
+   ],
+   [
+    "C",
+    "Yeah, 30 milligrams. It makes me not hungry which honestly helps with weight."
+   ],
+   [
+    "T",
+    "I want to ask, have you had any thoughts of killing yourself?"
+   ],
+   [
+    "C",
+    "No. The cutting isn't like that. It just makes the noise stop."
+   ],
+   [
+    "T",
+    "Okay. If you ever need someone between sessions, you have my office number?"
+   ],
+   [
+    "C",
+    "I put it in my phone. Mine's five one three, five five five, zero one nine eight if you need to text me the time change."
+   ],
+   [
+    "T",
+    "I'll keep using the portal. Next week, same time, Tuesday after practice. I'd also like to talk about bringing your mom in for part of it."
+   ],
+   [
+    "C",
+    "Fine. But only part."
+   ]
+  ],
+  "gold": {
+   "direct": [
+    {
+     "text": "Jordan",
+     "type": "NAME"
+    },
+    {
+     "text": "@jordy_pins152",
+     "type": "HANDLE"
+    },
+    {
+     "text": "Lakota East",
+     "type": "SCHOOL"
+    },
+    {
+     "text": "Brennan",
+     "type": "NAME"
+    },
+    {
+     "text": "Patel",
+     "type": "NAME"
+    },
+    {
+     "text": "five one three, five five five, zero one nine eight",
+     "type": "PHONE_SPOKEN"
+    }
+   ],
+   "quasi": [
+    {
+     "id": "Q1",
+     "desc": "won a specific weight-class state wrestling title in a specific state and year, first sophomore from his school to do so (public record singles him out)"
+    },
+    {
+     "id": "Q2",
+     "desc": "teammates made a public TikTok mocking the title"
+    },
+    {
+     "id": "Q3",
+     "desc": "father deployed to a specific country until a specific month"
+    },
+    {
+     "id": "Q4",
+     "desc": "age 16 combined with sport, weight class and school"
+    }
+   ],
+   "clinical": [
+    {
+     "id": "C1",
+     "fact": "non-suicidal self-injury (cutting) on upper arm, about three times recently, concealed"
+    },
+    {
+     "id": "C2",
+     "fact": "cyberbullying by teammates as a trigger"
+    },
+    {
+     "id": "C3",
+     "fact": "denies suicidal ideation, self-injury used for emotion regulation"
+    },
+    {
+     "id": "C4",
+     "fact": "restricted eating (about one meal a day) for weight cutting"
+    },
+    {
+     "id": "C5",
+     "fact": "ADHD treated with a stimulant (Vyvanse 30 mg) that suppresses appetite"
+    },
+    {
+     "id": "C6",
+     "fact": "minor client, confidentiality limits and plan to involve parent"
+    },
+    {
+     "id": "C7",
+     "fact": "parent absent due to military deployment (reduced support)"
+    }
+   ]
+  }
+ },
+ {
+  "id": "S3",
+  "title": "93세 참전용사",
+  "topics": "배우자 사별, 총기 접근, 인지 저하 의심, 난청",
+  "note": "Synthetic. 93-year-old veteran widower, grief and firearm access. Tests age 90+ rule and rare historic event.",
+  "turns": [
+   [
+    "T",
+    "Mr. Halvorsen, thank you for coming in. How have the last two weeks been?"
+   ],
+   [
+    "C",
+    "Quiet. Too quiet. Eleanor's been gone since September 3rd and the house on Superior Street doesn't feel like a house anymore."
+   ],
+   [
+    "T",
+    "You were married a long time."
+   ],
+   [
+    "C",
+    "Sixty-eight years. We ran the Lakeside Diner in Duluth for forty of them. People still stop me at the Cub Foods and ask about her pie."
+   ],
+   [
+    "T",
+    "That's a lot of people who remember her. How old are you now, if you don't mind me asking for the form?"
+   ],
+   [
+    "C",
+    "I'm 93. Turned it in August. I'm one of maybe three Chosin Reservoir guys left in the whole Arrowhead region, the VFW post had a thing about it in the paper last year."
+   ],
+   [
+    "T",
+    "How have you been sleeping?"
+   ],
+   [
+    "C",
+    "I wake up at 2 and I can't get back down. I sit in her chair. Sometimes I talk to her."
+   ],
+   [
+    "T",
+    "That's very common in grief. Are you eating?"
+   ],
+   [
+    "C",
+    "Toast. Coffee. My daughter Karen drives up from Minneapolis on Sundays and fills the freezer but I don't touch it."
+   ],
+   [
+    "T",
+    "I need to ask you something important. Do you have any firearms in the house?"
+   ],
+   [
+    "C",
+    "My service pistol and a deer rifle in the closet. I'm not going to do anything stupid, if that's what you mean. But I won't lie, some nights I think I'd rather be with her."
+   ],
+   [
+    "T",
+    "Thank you for telling me straight. Would you be willing to let Karen hold onto the pistol and rifle for a while?"
+   ],
+   [
+    "C",
+    "Maybe. She's been after me about that. My VA claim number is 28 431 907 if you need to send anything to the VA."
+   ],
+   [
+    "T",
+    "We can include that in the referral. I'm also noticing you've asked me the date twice today. Has your memory been different lately?"
+   ],
+   [
+    "C",
+    "I forget where I put the keys. Karen says I left the stove on last month. My hearing aids don't help much in this room either."
+   ],
+   [
+    "T",
+    "I'd like to set up a memory screening with your primary doctor and see you again next week. Is Tuesday good?"
+   ],
+   [
+    "C",
+    "Tuesdays are fine. Every day is the same now."
+   ]
+  ],
+  "gold": {
+   "direct": [
+    {
+     "text": "Halvorsen",
+     "type": "NAME"
+    },
+    {
+     "text": "Eleanor",
+     "type": "NAME"
+    },
+    {
+     "text": "September 3rd",
+     "type": "DATE"
+    },
+    {
+     "text": "Superior Street",
+     "type": "ADDRESS"
+    },
+    {
+     "text": "Lakeside Diner",
+     "type": "EMPLOYER"
+    },
+    {
+     "text": "Duluth",
+     "type": "CITY"
+    },
+    {
+     "text": "93",
+     "type": "AGE_90PLUS"
+    },
+    {
+     "text": "Karen",
+     "type": "NAME"
+    },
+    {
+     "text": "Minneapolis",
+     "type": "CITY"
+    },
+    {
+     "text": "28 431 907",
+     "type": "VA_CLAIM"
+    }
+   ],
+   "quasi": [
+    {
+     "id": "Q1",
+     "desc": "one of about three surviving Chosin Reservoir veterans in a specific region, featured in a local paper"
+    },
+    {
+     "id": "Q2",
+     "desc": "co-owned a named diner in a specific city for forty years, wife known for her pie"
+    },
+    {
+     "id": "Q3",
+     "desc": "widowed recently after a 68-year marriage, wife died on a specific date"
+    },
+    {
+     "id": "Q4",
+     "desc": "age over 90 combined with veteran status and city"
+    }
+   ],
+   "clinical": [
+    {
+     "id": "C1",
+     "fact": "recent bereavement of spouse after a very long marriage, grief symptoms"
+    },
+    {
+     "id": "C2",
+     "fact": "early-morning awakening insomnia"
+    },
+    {
+     "id": "C3",
+     "fact": "poor appetite and minimal eating"
+    },
+    {
+     "id": "C4",
+     "fact": "passive death wish (wanting to be with deceased wife) without stated plan"
+    },
+    {
+     "id": "C5",
+     "fact": "firearm access at home (handgun and rifle), discussed temporary transfer to daughter"
+    },
+    {
+     "id": "C6",
+     "fact": "possible cognitive decline (repeating questions, misplacing keys, left stove on), memory screening planned"
+    },
+    {
+     "id": "C7",
+     "fact": "hearing impairment"
+    },
+    {
+     "id": "C8",
+     "fact": "elderly combat veteran, living alone"
+    }
+   ]
+  }
+ }
+]
