@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { loadSamples } from './load-samples.ts';
-import { exportRecord, marksFor, segment, STAGES } from './samples.ts';
+import { diffChunks, exportRecord, marksFor, segment, STAGES } from './samples.ts';
 
 const samples = loadSamples();
 
@@ -46,6 +46,18 @@ test('export never contains an original identifier or the lineup answer key', ()
     const secrets = [...s.highlights.original_identifiers.map(i => i.text), String(client.fields.city)];
     for (const secret of secrets) {
       assert.ok(!out.some(x => x.includes(secret.toLowerCase())), `${s.id}: export leaks "${secret}"`);
+    }
+  }
+});
+
+test('stage diffs reassemble both sides', () => {
+  for (const s of samples) {
+    for (const [a, b] of [['original', 'stage1'], ['stage1', 'final'], ['original', 'final']] as const) {
+      s.transcript[a].forEach((t, i) => {
+        const chunks = diffChunks(t.text, s.transcript[b][i].text);
+        assert.equal(chunks.map(c => (c.same ? c.text : c.from)).join(''), t.text);
+        assert.equal(chunks.map(c => (c.same ? c.text : c.to)).join(''), s.transcript[b][i].text);
+      });
     }
   }
 });

@@ -28,8 +28,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="top">{children}</main>
         <footer>
           <div className="wrap">
-            <span>© 2026 Into the Unknown · Interactive prototype using synthetic conversations</span>
-            <span>This site describes no real patients, partners, customers, or certified performance. Not legal advice.</span>
+            <span>© 2026 Into the Unknown</span>
+            <span>Prototype · synthetic data only · not legal advice</span>
           </div>
         </footer>
         <RevealObserver />

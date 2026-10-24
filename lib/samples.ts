@@ -5,11 +5,8 @@ export const STAGES = ['original', 'stage1', 'final'] as const;
 export type Stage = (typeof STAGES)[number];
 type ByStage<T> = Record<Stage, T>;
 
-export const STAGE_LABEL: Record<Stage, string> = {
-  original: 'Original',
-  stage1: 'Baseline (Presidio)',
-  final: 'Into the Unknown',
-};
+export const STAGE_LABEL: Record<Stage, string> = { original: 'Original', stage1: 'Stage 1', final: 'Stage 2' };
+export const STAGE_STEP: Record<Stage, string> = { original: 'Session', stage1: 'Masking', final: 'Rewrite' };
 
 export type Turn = { speaker: string; role: 'T' | 'C'; text: string };
 export type CheckStatus = 'pass' | 'review' | 'fail';
@@ -89,19 +86,10 @@ export const SAFE_HARBOR_LABEL: Record<string, string> = {
   R: 'Other unique identifying characteristics',
 };
 
-export const LINEUP_MODE: Record<string, { label: string; meaning: string }> = {
-  random: {
-    label: 'Random decoys',
-    meaning: 'How identifiable the retained demographics (sex, age band, occupation) are on their own. It stays high even with good de-identification, so treat it as the ceiling.',
-  },
-  matched: {
-    label: 'Demographically matched decoys',
-    meaning: 'Extra leakage among people who share the retained demographics. This is the de-identification quality metric.',
-  },
-  implied: {
-    label: 'Decoys matched on inferable attributes',
-    meaning: 'Decoys also share attributes the clinical content is allowed to reveal, such as bereavement or being over 90.',
-  },
+export const LINEUP_MODE: Record<string, string> = {
+  random: 'Random decoys',
+  matched: 'Matched decoys',
+  implied: 'Inferred-attribute decoys',
 };
 
 // ---------- transcript highlighting ----------
@@ -112,7 +100,7 @@ export type Seg = { text: string; mark?: Mark };
 const reEsc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const TAG = /^<[A-Z_]+>$/;
 
-// Splits text into plain runs and marked runs. `tags` also marks Presidio-style <TYPE> placeholders.
+// Splits text into plain runs and marked runs. `tags` also marks <TYPE> placeholders.
 export function segment(text: string, terms: [string, Mark][], tags = false): Seg[] {
   const alts = terms.map(([t]) => t).filter(Boolean).sort((a, b) => b.length - a.length).map(reEsc);
   if (tags) alts.unshift('<[A-Z_]+>');
@@ -141,7 +129,7 @@ export function marksFor(s: Sample, stage: Stage): { terms: [string, Mark][]; ta
 
 // ---------- buyer-facing export ----------
 
-// Processed session plus evidence. Never the original, the baseline output, identifier highlights,
+// Processed session plus evidence. Never the original, the stage-1 output, identifier highlights,
 // mosaic-clue descriptions (they paraphrase the original clues), or the lineup answer key.
 export function exportRecord(s: Sample) {
   const e = s.evaluation;
@@ -149,10 +137,7 @@ export function exportRecord(s: Sample) {
     sample_id: s.id,
     synthetic: s.synthetic,
     legal_basis: 'synthetic',
-    pipeline: {
-      rewrite: 'Claude Sonnet: de-identification sheet once, then rewrite in 8-turn windows from the public sheet',
-      evaluation: 'Rule checks + Claude Haiku probability judgments (per window and per session) + persona lineup',
-    },
+    pipeline: { stage_1: 'masking', stage_2: 'rewrite from de-identification sheet', evaluation: 'rules, probability judgments, persona lineup' },
     retained_attributes: s.deid_sheet.retained,
     messages: s.transcript.final.map((t, i) => ({ turn_id: `t${i + 1}`, speaker: t.role === 'T' ? 'therapist' : 'client', text: t.text })),
     clinical_facts: e.clinical.map(c => ({ id: c.id, fact: c.fact, retention_probability: c.probability.final })),
@@ -172,3 +157,65 @@ export function exportRecord(s: Sample) {
 }
 
 export const pct = (v: number) => `${Math.round(v * 100)}%`;
+
+// ---------- stage-to-stage diff (drives the morph animation) ----------
+
+export type Chunk = { same: true; text: string } | { same: false; from: string; to: string };
+
+const tokenize = (s: string) => s.match(/<[A-Z_]+>|[\w'’-]+|\s+|[^\w\s]/g) ?? [];
+
+// Word-level LCS diff. Changes separated only by whitespace, punctuation, or a couple of
+// short words are merged, so a rewritten phrase reads as one change instead of confetti.
+export function diffChunks(a: string, b: string): Chunk[] {
+  if (a === b) return [{ same: true, text: a }];
+  const x = tokenize(a), y = tokenize(b);
+  const L = Array.from({ length: x.length + 1 }, () => new Uint16Array(y.length + 1));
+  for (let i = x.length - 1; i >= 0; i--)
+    for (let j = y.length - 1; j >= 0; j--)
+      L[i][j] = x[i] === y[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+
+  const raw: Chunk[] = [];
+  let from = '', to = '';
+  const flush = () => { if (from || to) raw.push({ same: false, from, to }); from = to = ''; };
+  for (let i = 0, j = 0; i < x.length || j < y.length;) {
+    if (i < x.length && j < y.length && x[i] === y[j]) {
+      flush();
+      const last = raw[raw.length - 1];
+      if (last?.same) last.text += x[i]; else raw.push({ same: true, text: x[i] });
+      i++; j++;
+    } else if (j < y.length && (i === x.length || L[i][j + 1] >= L[i + 1][j])) to += y[j++];
+    else from += x[i++];
+  }
+  flush();
+
+  const small = (t: string) => (t.match(/[\w'’-]+/g) ?? []).every(w => w.length <= 3) && (t.match(/[\w'’-]+/g) ?? []).length <= 2;
+  const out: Chunk[] = [];
+  for (let k = 0; k < raw.length; k++) {
+    const c = raw[k], prev = out[out.length - 1], next = raw[k + 1];
+    if (c.same && prev && !prev.same && next && !next.same && small(c.text)) {
+      prev.from += c.text + next.from;
+      prev.to += c.text + next.to;
+      k++;
+    } else if (!c.same && prev && !prev.same) {
+      prev.from += c.from; prev.to += c.to;
+    } else out.push({ ...c });
+  }
+
+  // Keep whitespace shared by both sides outside the highlighted change.
+  const res: Chunk[] = [];
+  const pushSame = (t: string) => {
+    if (!t) return;
+    const last = res[res.length - 1];
+    if (last?.same) last.text += t; else res.push({ same: true, text: t });
+  };
+  for (const c of out) {
+    if (c.same) { pushSame(c.text); continue; }
+    let { from, to } = c, lead = '', tail = '';
+    while (from && to && from[0] === to[0] && /\s/.test(from[0])) { lead += from[0]; from = from.slice(1); to = to.slice(1); }
+    while (from && to && from.at(-1) === to.at(-1) && /\s/.test(from.at(-1)!)) { tail = from.at(-1) + tail; from = from.slice(0, -1); to = to.slice(0, -1); }
+    pushSame(lead);
+    if (from || to) res.push({ same: false, from, to });
+    pushSame(tail);
+  }
+  return res;
+}

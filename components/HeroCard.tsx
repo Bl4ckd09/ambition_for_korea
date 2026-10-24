@@ -1,57 +1,40 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { pct, STAGE_LABEL, STAGE_STEP, type Stage } from '@/lib/samples';
+import { Morph, reducedMotion, useStageMorph } from './Morph';
 
-const STAGES = [
-  ['Original session', 1400],
-  ['Finding identifying details', 2000],
-  ['Rewriting from the sheet', 2000],
-  ['Evaluated', 3600],
-] as const;
+type Props = { label: string; texts: Record<Stage, string>; reid: Record<Stage, number> };
 
-// An empty `to` means the detail is dropped rather than replaced.
-const Swap = ({ from, to }: { from: string; to: string }) => (
-  <span className={`swap${to ? '' : ' drop'}`}><span className="a">{from}</span><span className="b">{to}</span></span>
-);
-
-type Props = { reid: { original: number; final: number; chance: number } };
-const pct = (v: number) => `${Math.round(v * 100)}%`;
-
-export default function HeroCard({ reid }: Props) {
-  // Starts on the final stage so server HTML and reduced-motion users see the full result.
-  const [stage, setStage] = useState(3);
+// Loops one client turn through Original → Stage 1 → Stage 2.
+export default function HeroCard({ label, texts, reid }: Props) {
+  // Server HTML and reduced-motion users see the finished rewrite.
+  const { from, to, phase, go, jump } = useStageMorph('final');
 
   useEffect(() => {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (reducedMotion()) return;
+    const seq: [() => void, number][] = [[() => jump('original'), 1800], [() => go('stage1'), 3400], [() => go('final'), 4800]];
     let i = 0;
     let timer: ReturnType<typeof setTimeout>;
     const tick = () => {
-      setStage(i);
-      timer = setTimeout(tick, STAGES[i][1]);
-      i = (i + 1) % STAGES.length;
+      seq[i][0]();
+      timer = setTimeout(tick, seq[i][1]);
+      i = (i + 1) % seq.length;
     };
     tick();
     return () => clearTimeout(timer);
-  }, []);
+  }, [go, jump]);
 
   return (
-    <figure className="hero-card" data-stage={stage} aria-label="Illustration: a line from synthetic session S1, rewritten so the public event no longer identifies the family while the bereavement is kept">
+    <figure className="hero-card" data-stage={to} aria-label="A line from a synthetic session, shown as written, after masking, and after rewriting">
       <div className="chrome">
         <span className="dots"><i /><i /><i /></span>
-        <span>S1 · night-shift ER nurse · synthetic</span>
-        <span className="stage" aria-hidden="true">{STAGES[stage][0]}</span>
+        <span>{label}</span>
+        <span className="stage" aria-hidden="true">{to === 'original' ? 'Original' : `${STAGE_LABEL[to]} · ${STAGE_STEP[to]}`}</span>
       </div>
-      <p className="hero-utt">
-        <span className="who">Client</span>
-        <span className="keep">My dad</span><Swap from=", Ernesto," to="" /> <span className="keep">died</span>{' '}
-        <Swap from="in the Moore tornado on May 20, 2025" to="suddenly about a year ago" />. He was{' '}
-        <span className="keep">helping</span> <Swap from="a neighbor get into their storm shelter" to="someone else get to safety" />.{' '}
-        <Swap from="It was on the news, they called him a hero on KOCO" to="It got a lot of public attention, and people called him a hero" />.
-      </p>
+      <p className="hero-utt"><span className="who">Client</span><Morph from={texts[from]} to={texts[to]} phase={phase} /></p>
       <div className="hero-out">
-        <span className="chip new">4 identifying details rewritten</span>
-        <span className="chip ctx">Kept: bereavement · helping others · public grief</span>
-        <span className="chip">Lineup re-identification {pct(reid.original)} → {pct(reid.final)} · chance {pct(reid.chance)}</span>
+        <span className="chip new">Re-identification {pct(reid.original)} → {pct(reid.final)}</span>
       </div>
     </figure>
   );

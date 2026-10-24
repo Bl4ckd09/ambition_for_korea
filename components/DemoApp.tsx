@@ -1,26 +1,33 @@
 'use client';
 
-import { useState } from 'react';
-import { exportRecord, pct, STAGES, STAGE_LABEL, titleOf, topicsOf, type Sample, type Stage } from '@/lib/samples';
-import MarkedText, { MarkLegend } from './MarkedText';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { exportRecord, pct, STAGES, STAGE_LABEL, STAGE_STEP, titleOf, type Sample, type Stage } from '@/lib/samples';
+import { Morph, useStageMorph } from './Morph';
 import Report from './Report';
-import StageBars from './StageBars';
 
-const byStage = <T,>(o: Record<Stage, T>, f: (v: T) => number) =>
-  Object.fromEntries(STAGES.map(st => [st, f(o[st])])) as Record<Stage, number>;
-
-const Metric = ({ title, hint, children }: { title: string; hint: string; children: React.ReactNode }) => (
-  <div className="metric"><h4>{title}</h4><small>{hint}</small>{children}</div>
-);
+const STEP_MS = 3600;
 
 export default function DemoApp({ samples }: { samples: Sample[] }) {
   const [idx, setIdx] = useState(0);
-  const [showBaseline, setShowBaseline] = useState(true);
+  const [playing, setPlaying] = useState(false);
+  const { from, to, phase, go, jump } = useStageMorph('original');
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
+
   const s = samples[idx];
   const sum = s.evaluation.summary;
-  const stages = showBaseline ? [...STAGES] : STAGES.filter(st => st !== 'stage1');
-  const sh = sum.safe_harbor_passed.final.total;
-  const ids = sum.direct_identifiers_left.final.total;
+  const at = STAGES.indexOf(to);
+
+  const stop = () => { clearTimeout(timer.current); setPlaying(false); };
+  const step = (st: Stage) => { stop(); go(st); };
+  const pick = (i: number) => { stop(); setIdx(i); jump('original'); };
+  const play = () => {
+    stop();
+    setPlaying(true);
+    jump('original');
+    const after = (ms: number, f: () => void) => { timer.current = setTimeout(f, ms); };
+    after(700, () => { go('stage1'); after(STEP_MS, () => { go('final'); after(1200, () => setPlaying(false)); }); });
+  };
 
   const download = () => {
     const blob = new Blob([JSON.stringify(exportRecord(s), null, 2)], { type: 'application/json' });
@@ -29,63 +36,71 @@ export default function DemoApp({ samples }: { samples: Sample[] }) {
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   };
 
+  // Metrics move when the text swaps, not while changes are still being marked.
+  const shown = phase === 'mark' ? from : to;
+  const sh = sum.safe_harbor_passed[shown], ids = sum.direct_identifiers_left[shown];
+  const tiles: [string, number, string, number?][] = [
+    ['Re-identification', sum.reidentification_probability[shown], pct(sum.reidentification_probability[shown]), sum.chance],
+    ['Mosaic exposure', sum.mosaic_exposure[shown], pct(sum.mosaic_exposure[shown])],
+    ['Clinical facts kept', sum.clinical_retention[shown], pct(sum.clinical_retention[shown])],
+    ['Safe Harbor', sh.passed / sh.total, `${sh.passed}/${sh.total}`],
+    ['Identifiers left', ids.left / ids.total, `${ids.left}/${ids.total}`],
+  ];
+
   return (
     <div className="demo">
-      <div className="picker" role="group" aria-label="Choose a synthetic session">
+      <div className="picker" role="group" aria-label="Session">
         {samples.map((x, i) => (
-          <button key={x.id} type="button" className="pick" aria-pressed={i === idx} onClick={() => setIdx(i)}>
-            <span className="pick-id">{x.id} · synthetic</span>
+          <button key={x.id} type="button" className="pick" aria-pressed={i === idx} onClick={() => pick(i)}>
+            <span className="pick-id">{x.id}</span>
             <b>{titleOf(x)}</b>
-            <small>{topicsOf(x)}</small>
           </button>
         ))}
       </div>
 
-      <div className="panel scorecard">
-        <Metric title="Re-identification in lineup" hint={`Matched decoys · lower is better · line = chance (${pct(sum.chance)})`}>
-          <StageBars values={sum.reidentification_probability} format={pct} chance={sum.chance} />
-        </Metric>
-        <Metric title="Mosaic exposure" hint="Combined clues · lower is better">
-          <StageBars values={sum.mosaic_exposure} format={pct} />
-        </Metric>
-        <Metric title="Clinical facts retained" hint="Higher is better">
-          <StageBars values={sum.clinical_retention} format={pct} />
-        </Metric>
-        <Metric title="Safe Harbor categories passed" hint="Higher is better">
-          <StageBars values={byStage(sum.safe_harbor_passed, v => v.passed)} max={sh} format={v => `${v}/${sh}`} />
-        </Metric>
-        <Metric title="Direct identifiers left" hint="Known test identifiers · lower is better">
-          <StageBars values={byStage(sum.direct_identifiers_left, v => v.left)} max={ids} format={v => `${v}/${ids}`} />
-        </Metric>
+      <div className="player-bar panel">
+        <div className="stepper" role="group" aria-label="Stage">
+          {STAGES.map((st, i) => (
+            <Fragment key={st}>
+              {i > 0 && <span className={`step-line${at >= i ? ' on' : ''}`} />}
+              <button type="button" className={`step${at >= i ? ' on' : ''}`} aria-pressed={to === st} onClick={() => step(st)}>
+                <i>{i}</i><b>{STAGE_LABEL[st]}</b><small>{STAGE_STEP[st]}</small>
+              </button>
+            </Fragment>
+          ))}
+        </div>
+        <button className="btn btn-primary btn-sm" type="button" onClick={play} disabled={playing}>
+          {playing ? 'Playing…' : to === 'final' ? '↺ Replay' : '▶ Play'}
+        </button>
       </div>
 
-      <div className="panel">
-        <div className="panel-head">
-          <h3>Session transcript</h3>
-          <label className="toggle">
-            <input type="checkbox" checked={showBaseline} onChange={e => setShowBaseline(e.target.checked)} />
-            Show Presidio baseline
-          </label>
-        </div>
-        <MarkLegend stages={stages} />
-        <div className={`tx cols-${stages.length}`}>
-          <div className="tx-head"><span />{stages.map(st => <span key={st}>{STAGE_LABEL[st]}</span>)}</div>
+      <div className="stage-grid">
+        <div className="panel morph-panel">
           {s.transcript.original.map((t, i) => (
-            <div key={i} className={`tx-row${t.role === 'C' ? ' client' : ''}`}>
+            <div key={i} className={`mrow${t.role === 'C' ? ' client' : ''}`}>
               <span className="who">{t.role === 'T' ? 'Therapist' : 'Client'}</span>
-              {stages.map(st => (
-                <p key={st} data-stage={STAGE_LABEL[st]}><MarkedText s={s} stage={st} text={s.transcript[st][i].text} /></p>
-              ))}
+              <p><Morph from={s.transcript[from][i].text} to={s.transcript[to][i].text} phase={phase} /></p>
             </div>
           ))}
         </div>
+        <aside className={`panel tiles s-${shown}`} aria-live="polite">
+          {tiles.map(([label, ratio, value, chance]) => (
+            <div key={label} className="tile">
+              <span>{label}</span>
+              <b>{value}</b>
+              <div className="tile-bar">
+                <i style={{ width: `${Math.max(ratio * 100, 1)}%` }} />
+                {chance !== undefined && <em style={{ left: `${chance * 100}%` }} title={`Chance ${pct(chance)}`} />}
+              </div>
+            </div>
+          ))}
+        </aside>
       </div>
 
-      <Report s={s} />
+      <Report s={s} stage={to} />
 
-      <div className="panel demo-foot">
-        <p>Export the buyer-facing record: the Into the Unknown transcript, retained attributes, clinical facts, and verification results. The original, the baseline output, and the lineup answer key are never included.</p>
-        <button className="btn btn-primary btn-sm" type="button" onClick={download}>Download {s.id} JSON</button>
+      <div className="export">
+        <button className="btn btn-ghost btn-sm" type="button" onClick={download}>Download {s.id} JSON</button>
       </div>
     </div>
   );
