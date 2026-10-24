@@ -31,7 +31,7 @@ export default function DemoApp({ samples }: { samples: Sample[] }) {
 
   const download = () => {
     const blob = new Blob([JSON.stringify(exportRecord(s), null, 2)], { type: 'application/json' });
-    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `sotto-${s.id}.json` });
+    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `into-the-unknown-${s.id}.json` });
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   };

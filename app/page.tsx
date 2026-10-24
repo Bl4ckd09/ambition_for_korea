@@ -168,7 +168,7 @@ export default function Home() {
               <div className="never"><b>Never included:</b> originals, identifiers, the lineup answer key, audio.</div>
             </div>
             <div className="code reveal">
-              <div className="code-h"><span>sotto-{s1.id}.json</span></div>
+              <div className="code-h"><span>into-the-unknown-{s1.id}.json</span></div>
               <pre dangerouslySetInnerHTML={{ __html: highlightJson(JSON.stringify(exportRecord(s1), null, 2)) }} />
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function Home() {
             <div className="card wide reveal">
               <span className="step-n">Core design choice</span>
               <h3>Expert Determination, not just Safe Harbor</h3>
-              <p>Safe Harbor strips the context evaluations need. Expert Determination lets a qualified expert approve richer data for a defined recipient, and Sotto&apos;s sheet, checks, and lineup results are the evidence that expert works from.</p>
+              <p>Safe Harbor strips the context evaluations need. Expert Determination lets a qualified expert approve richer data for a defined recipient, and Into the Unknown&apos;s sheet, checks, and lineup results are the evidence that expert works from.</p>
             </div>
             <div className="card reveal">
               <span className="step-n">Sourcing</span>
